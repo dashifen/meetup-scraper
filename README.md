@@ -33,7 +33,7 @@ The script returns and array of events. Each event has the following key value p
 
 * link
 * title
-* epoch
+* epoch (microtime)
 * human_date
 * description
 
