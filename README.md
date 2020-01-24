@@ -25,6 +25,8 @@ foreach ( $events as $event){
 }
 ```
 
+To show past events, you would have called  `get_past_meetup_events()` instead.
+
 ## Event Elements
 
 The script returns and array of events. Each event has the following key value pairs:
