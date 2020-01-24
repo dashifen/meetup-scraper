@@ -73,20 +73,42 @@ class MeetupEvents {
     }
 
     /**
-     * Likely a very fragile method to get future events in a multi-dimensional array. uses getAndCacheUrl()
-     * @param $group
+     * Get future events for a group
+     * @param $group string group name to fetch events for
      * @return array $events with each member being an array with keys of link, title, epoch, human_date and description
      */
     function get_future_meetup_events($group)
     {
         $url = $this->meetupBase . '/' . $group . $this->eventsUri;
+        return $this->get_meetup_events($group, $url);
+    }
 
-        $blogHtml = $this->getAndCacheUrl($url, $this->cacheAge, $this->cachePath);
+
+    /**
+     * Get past events for a group
+     * @param $group string group name to fetch events for
+     * @return array $events with each member being an array with keys of link, title, epoch, human_date and description
+     */
+    function get_past_meetup_events($group)
+    {
+        $url = $this->meetupBase . '/' . $group . $this->eventsUri . 'past/';
+        return $this->get_meetup_events($group, $url);
+    }
+
+    /**
+     * Likely a very fragile method to get past/future events in a multi-dimensional array. uses getAndCacheUrl()
+     * @param $group string group name to use in URL
+     * @param $url string URL as derived from past or future events functions
+     * @return array
+     */
+    private function get_meetup_events($group, $url){
+
+        $meetupHtml = $this->getAndCacheUrl($url, $this->cacheAge, $this->cachePath);
 
         $events = array();
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
-        $dom->loadHTML($blogHtml);
+        $dom->loadHTML($meetupHtml);
         libxml_clear_errors();
 
         $finder = new DomXPath($dom);
@@ -123,4 +145,6 @@ class MeetupEvents {
         ksort($events);
         return $events;
     }
+
+
 }
