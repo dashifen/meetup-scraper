@@ -46,6 +46,7 @@ class MeetupEvents {
      */
     function getAndCacheUrl($url, $cacheAge, $cachePath) {
         $cacheFile = $cachePath . 'MeetupEvents_cache_' .  md5($url);
+//        $cacheFile = $cachePath . 'MeetupEvents_cache_' .  md5($url). rand(10000000,988888888);
 
         if (!is_file($cacheFile) || filectime($cacheFile) < $cacheAge) {
             // todo - switch this to use cURL call and check for 200s and such
@@ -128,6 +129,14 @@ class MeetupEvents {
                 if ($link->getAttribute('datetime')) {
                     $event['epoch'] = $link->getAttribute('datetime');
                     $event['human_date'] = $link->nodeValue;
+                }
+            }
+            foreach ($node->getElementsByTagName('div') as $link) {
+                if (strstr($link->getAttribute('class'), 'text--strikethrough')) {
+                    $event['status'] = 'cancelled';
+                    break;
+                } else {
+                    $event['status'] = 'active';
                 }
             }
             foreach ($node->getElementsByTagName('p') as $link) {
