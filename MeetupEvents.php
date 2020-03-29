@@ -130,6 +130,14 @@ class MeetupEvents {
                     $event['human_date'] = $link->nodeValue;
                 }
             }
+            foreach ($node->getElementsByTagName('div') as $link) {
+                if (strstr($link->getAttribute('class'), 'text--strikethrough')) {
+                    $event['status'] = 'cancelled';
+                    break;
+                } else {
+                    $event['status'] = 'active';
+                }
+            }
             foreach ($node->getElementsByTagName('p') as $link) {
                 if ($link->getAttribute('class') == 'text--small padding--top margin--halfBottom' &&
                     trim($link->getAttribute('class')) != '' &&
