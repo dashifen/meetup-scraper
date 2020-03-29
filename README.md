@@ -18,7 +18,7 @@ $meetup = new MeetupEvents();
 $events = $meetup->get_future_meetup_events('synshop');
 $count = 1;
 foreach ( $events as $event){
-        print "<div class='date'>{$event['human_date']}</div>";
+        print "<div class='date {$event['status']}'>{$event['human_date']}</div>";
         print "<div class='event'>{$event['title']}</div>";
         $count++;
         if ($count > 6) break;
@@ -36,12 +36,14 @@ The script returns and array of events. Each event has the following key value p
 * epoch (microtime)
 * human_date
 * description
+* status (active or cancelled)
 
 Here's a `var_dump()` of a sample event:
 
 ```
 Array
 (
+    [status] => active
     [link] => https://www.meetup.com/synshop/events/bfhxflyzmbvb/
     [title] => Paid Members Only:  Danger Room Tools and Shop Orientation
     [epoch] => 1568685600000
