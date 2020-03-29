@@ -46,7 +46,6 @@ class MeetupEvents {
      */
     function getAndCacheUrl($url, $cacheAge, $cachePath) {
         $cacheFile = $cachePath . 'MeetupEvents_cache_' .  md5($url);
-//        $cacheFile = $cachePath . 'MeetupEvents_cache_' .  md5($url). rand(10000000,988888888);
 
         if (!is_file($cacheFile) || filectime($cacheFile) < $cacheAge) {
             // todo - switch this to use cURL call and check for 200s and such
