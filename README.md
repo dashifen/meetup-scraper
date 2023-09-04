@@ -33,7 +33,7 @@ The script returns and array of events. Each event has the following key value p
 
 * link
 * title
-* epoch (microtime)
+* epoch
 * human_date
 * description
 * status (active or cancelled)
@@ -46,7 +46,7 @@ Array
     [status] => active
     [link] => https://www.meetup.com/synshop/events/bfhxflyzmbvb/
     [title] => Paid Members Only:  Danger Room Tools and Shop Orientation
-    [epoch] => 1568685600000
+    [epoch] => 15686856
     [human_date] => Mon, Sep 16, 7:00 PM
     [description] => Tonight we cover the major rules in the Danger room, and the Major Rules for safety in the danger room.
 )

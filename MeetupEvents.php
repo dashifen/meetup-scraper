@@ -112,25 +112,29 @@ class MeetupEvents {
         libxml_clear_errors();
 
         $finder = new DomXPath($dom);
-        $classname = "eventCard";
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        $finder->registerNamespace('html','http://www.w3.org/1999/xhtml' );
+        $nodes = $finder->query('//div[contains(@class,"sm:p-5")]');
+
+        // DEBUG!
+//        print "<pre>";
 
         foreach ($nodes as $node) {
             $event = array();
-            foreach ($node->getElementsByTagName('a') as $link) {
-                if ($link->getAttribute('class') == 'eventCardHead--title') {
-                    $event['link'] = $this->meetupBase . $link->getAttribute('href');
+            foreach ($node->getElementsByTagName('span') as $link) {
+                if (strstr($link->getAttribute('class'), 'ds-font-title-3')) {
                     $event['title'] = $link->nodeValue;
                     break;
                 }
             }
             foreach ($node->getElementsByTagName('time') as $link) {
-                if ($link->getAttribute('datetime')) {
-                    $event['epoch'] = $link->getAttribute('datetime');
-                    $event['human_date'] = $link->nodeValue;
-                }
+                $event['epoch'] = strtotime($link->nodeValue);
+                $event['human_date'] = $link->nodeValue;
             }
-            foreach ($node->getElementsByTagName('div') as $link) {
+            foreach ($node->getElementsByTagName('a') as $link) {
+                // DEBUGS
+//                print '$link->getAttribute(href):' .  $link->getAttribute('href') . '</br>';
+//                print '<p>$link->nodeValue:::' .  $link->nodeValue . ':::</br>'. "\n\n\n";
+                $event['link'] = $link->getAttribute('href');
                 if (strstr($link->getAttribute('class'), 'text--strikethrough')) {
                     $event['status'] = 'cancelled';
                     break;
@@ -138,19 +142,17 @@ class MeetupEvents {
                     $event['status'] = 'active';
                 }
             }
-            foreach ($node->getElementsByTagName('p') as $link) {
-                if ($link->getAttribute('class') == 'text--small padding--top margin--halfBottom' &&
-                    trim($link->getAttribute('class')) != '' &&
-                    stristr($link->getAttribute('style'), "visibility:hidden") === false
-                ) {
+            foreach ($node->getElementsByTagName('div') as $link) {
+                if (strstr($link->getAttribute('class'), 'hidden md:block')) {
                     $event['description'] = $link->nodeValue;
-                } else {
-                    $event['description'] = null;
                 }
             }
             $events[$event['epoch'] . '-' . rand(100000, 888888)] = $event;
         }
         ksort($events);
+        // DEBUG
+//        print_r($events);
+//        exit('dead!');
         return $events;
     }
 
