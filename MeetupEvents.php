@@ -115,8 +115,6 @@ class MeetupEvents {
         $finder->registerNamespace('html','http://www.w3.org/1999/xhtml' );
         $nodes = $finder->query('//div[contains(@class,"sm:p-5")]');
 
-        // DEBUG!
-//        print "<pre>";
 
         foreach ($nodes as $node) {
             $event = array();
@@ -126,14 +124,16 @@ class MeetupEvents {
                     break;
                 }
             }
+            foreach ($node->getElementsByTagName('img') as $link) {
+                if (strstr($link->getAttribute('class'), 'aspect-video min-w-[180px] rounded-lg object-cover')) {
+                	$event['img'] = $link->getAttribute('src');
+		}
+            }
             foreach ($node->getElementsByTagName('time') as $link) {
                 $event['epoch'] = strtotime($link->nodeValue);
                 $event['human_date'] = $link->nodeValue;
             }
             foreach ($node->getElementsByTagName('a') as $link) {
-                // DEBUGS
-//                print '$link->getAttribute(href):' .  $link->getAttribute('href') . '</br>';
-//                print '<p>$link->nodeValue:::' .  $link->nodeValue . ':::</br>'. "\n\n\n";
                 $event['link'] = $link->getAttribute('href');
                 if (strstr($link->getAttribute('class'), 'text--strikethrough')) {
                     $event['status'] = 'cancelled';
@@ -143,6 +143,9 @@ class MeetupEvents {
                 }
             }
             foreach ($node->getElementsByTagName('div') as $link) {
+		if (strstr($link->getAttribute('class'), 'flex items-start space-x-1.5')) {
+		    $event['location'] = $link->nodeValue;
+		}
                 if (strstr($link->getAttribute('class'), 'hidden md:block')) {
                     $event['description'] = $link->nodeValue;
                 }
@@ -150,9 +153,6 @@ class MeetupEvents {
             $events[$event['epoch'] . '-' . rand(100000, 888888)] = $event;
         }
         ksort($events);
-        // DEBUG
-//        print_r($events);
-//        exit('dead!');
         return $events;
     }
 

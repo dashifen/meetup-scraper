@@ -37,6 +37,8 @@ The script returns and array of events. Each event has the following key value p
 * human_date
 * description
 * status (active or cancelled)
+* img (may be `UNSET` or is path to image for event)
+* location 
 
 Here's a `var_dump()` of a sample event:
 
@@ -49,5 +51,7 @@ Array
     [epoch] => 15686856
     [human_date] => Mon, Sep 16, 7:00 PM
     [description] => Tonight we cover the major rules in the Danger room, and the Major Rules for safety in the danger room.
+    [img] => https://secure.meetupstatic.com/photos/event/2/a/6/e/event_0862.webp
+    [locaiton] => Link visible for attendees
 )
 ```
