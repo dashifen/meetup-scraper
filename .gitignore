@@ -1,3 +1,5 @@
+vendor
+composer.lock
 index.html
 index.php
 .idea

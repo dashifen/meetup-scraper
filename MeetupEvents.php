@@ -1,5 +1,10 @@
 <?php
 
+namespace Dashifen\MeetupScraper;
+
+use DOMXPath;
+use DOMDocument;
+
 /**
  * Class MeetupEvents
  *
