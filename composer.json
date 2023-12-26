@@ -1,0 +1,11 @@
+{
+  "name": "dashifen/meetup-scraper",
+  "description": "A fork of mrjones-plip/MeetupScraper with Composer support.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Dashifen\\MeetupScraper\\": "."
+    }
+  }
+}
